@@ -2,7 +2,10 @@
 #include <any>
 #include <map>
 #include <cstring>
+#include <cstdlib>
 #include <fstream>
+#define NUM_ST 48
+#define NUM_FIN 57
 
 using namespace std;
 class Json {
@@ -12,12 +15,14 @@ public:
 
     // Метод возвращает true, если данный экземпляр содержит в себе JSON-массив. Иначе false.
     bool is_array(const string &str) const{
-        if(str.find('[') != string::npos) return true;
+        //if(str.find('[') != string::npos) return true;
+        if(str[0] == '[') return true;
         else return false;
     }
    	// Метод возвращает true, если данный экземпляр содержит в себе JSON-объект. Иначе false.
     bool is_object(const string &str) const{
-        if(str.find('{') != string::npos) return true;
+        //if(str.find('{') != string::npos) return true;
+        if(str[0] == '{') return true;
         else return false;
     }
 
@@ -47,9 +52,14 @@ public:
     // Если экземпляр является JSON-объектом, генерируется исключение.
     std::any& operator[](int index);
 
+private:
+    std::string get_key(std::string& s){
+
+    }
+public:
     std::any parse_object_get_value(std::string& s){
         string value;
-        value.assign(s, s.find(":")+1, s.find(",")-1);
+        value.assign(s, s.find(":")+2, s.find(",")-3);
 
         s.erase(s.find(":"), s.find(",")+1);
 
@@ -59,19 +69,29 @@ public:
         else if(is_array(value)){
 
         }
+        else if(value.find("\"") != string::npos){
+            value.assign(value, 1, value.length()-2);
+        }
+        else if((value[0]>=NUM_ST) || (value[value.length()-1]<=NUM_FIN)){
+            value = atoi(value.c_str());
+        }
+        cout << "\"" << value << "\"" << endl;
         return value;
     }
     // Метод возвращает объект класса Json из строки, содержащей Json-данные.
     static Json parse(const std::string& s){
         string str;
+        Json JSON(s);
         str.assign(s, 1, s.length()-2);
 
-        str.erase(0, str.find("\"")+1);
-        string key = str.substr(0, str.find("\""));
-        str.erase(0, str.find("\"")+1);
-        //_parsed_json = ;
+        //while(str.length()){
+            str.erase(0, str.find("\"")+1);
+            string key = str.substr(0, str.find("\""));
+            str.erase(0, str.find("\"")+1);
 
-        return Json(str);
+            JSON._parsed_json[key] = JSON.parse_object_get_value(str);
+        //}
+        return JSON;
     }
 
     // Метод возвращает объекта класса Json из файла, содержащего Json-данные в текстовом формате.
@@ -108,7 +128,7 @@ int main()
     Json *F1 = new Json(JSON);
     string s = F1->json_string;
     Json a = Json::parse(s);
-    cout << a.json_string << endl;
+    //cout << a.json_string << endl;
 
     //cout << "IS it an array? " << F1->is_array(F1->json_string);
     delete F1;
