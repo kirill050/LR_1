@@ -1,0 +1,10 @@
+{
+    "lastname" : "Ivanov",
+    "firstname" : "Ivan",
+    "age" : 25,
+    "islegal" : false,
+    "address" : {
+    	"city" : "Moscow",
+        "street" : "Vozdvijenka"
+    }
+}

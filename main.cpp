@@ -2,6 +2,7 @@
 #include <any>
 #include <map>
 #include <cstring>
+#include <cstdio>
 #include <cstdlib>
 #include <fstream>
 #define NUM_ST 48
@@ -53,29 +54,44 @@ public:
     std::any& operator[](int index);
 
 private:
-    std::string get_key(std::string& s){
-
+    std::string get_key(std::string& str){
+        str.erase(0, str.find("\"")+1);
+        string key = str.substr(0, str.find("\""));
+        str.erase(0, str.find("\"")+1);
+        return key;
     }
 public:
     std::any parse_object_get_value(std::string& s){
-        string value;
-        value.assign(s, s.find(":")+2, s.find(",")-3);
+        any value;
+        string pre_value;
+        pre_value.assign(s, s.find(":")+2, s.find(",")-3);
 
         s.erase(s.find(":"), s.find(",")+1);
 
-        if(is_object(value)){
+        if(is_object(pre_value)){
+            pre_value.erase(0, pre_value.find("\"")+1);
+            string key = get_key(pre_value);
+            map <string, any> MAP = {{key, parse_object_get_value(pre_value)}};
+            value = MAP;
+        }
+        else if(is_array(pre_value)){
 
         }
-        else if(is_array(value)){
+        else if(pre_value.find("\"") != string::npos){
+            pre_value.assign(pre_value, 1, pre_value.length()-2);
+            value = pre_value;
+            cout << "\"" << pre_value << "\"" << endl;
+        }
+        else if((pre_value[0]>=NUM_ST) && (pre_value[pre_value.length()-1]<=NUM_FIN)){
+            value = atof(pre_value.c_str());
+            cout << "<" << any_cast<double>(value) << ">" << endl;
+        }
+        else if((pre_value == "true") || (pre_value == "false")){
+            if(pre_value == "true") value = true;
+            else value = false;
+            cout << "{" << any_cast<bool>(value) << "}" << endl;
+        }
 
-        }
-        else if(value.find("\"") != string::npos){
-            value.assign(value, 1, value.length()-2);
-        }
-        else if((value[0]>=NUM_ST) || (value[value.length()-1]<=NUM_FIN)){
-            value = atoi(value.c_str());
-        }
-        cout << "\"" << value << "\"" << endl;
         return value;
     }
     // Метод возвращает объект класса Json из строки, содержащей Json-данные.
@@ -84,13 +100,13 @@ public:
         Json JSON(s);
         str.assign(s, 1, s.length()-2);
 
-        //while(str.length()){
-            str.erase(0, str.find("\"")+1);
-            string key = str.substr(0, str.find("\""));
-            str.erase(0, str.find("\"")+1);
+        while(str.length()){
+            //str.erase(0, str.find("\"")+1);
+            string key = JSON.get_key(str);
+            //str.erase(0, str.find("\"")+1);
 
             JSON._parsed_json[key] = JSON.parse_object_get_value(str);
-        //}
+        }
         return JSON;
     }
 
@@ -123,7 +139,7 @@ void make_string_from_json_file(const string file_name, string &json_string_hold
 int main()
 {
     string JSON;
-    make_string_from_json_file("JSON.txt", JSON);
+    make_string_from_json_file("json2.txt", JSON);
 
     Json *F1 = new Json(JSON);
     string s = F1->json_string;
