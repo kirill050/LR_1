@@ -55,24 +55,68 @@ public:
 
 private:
     std::string get_key(std::string& str){
-        str.erase(0, str.find("\"")+1);
-        string key = str.substr(0, str.find("\""));
-        str.erase(0, str.find("\"")+1);
-        return key;
+        cout << "get key: " << endl;
+        if(str.find("\"") != string::npos){
+            str.erase(0, str.find("\"")+1);
+            //cout << "\t1 str: " << str << endl;
+            if(str.find("\"") != string::npos){
+                string key = str.substr(0, str.find("\""));
+                //cout << "\t2 key: " << key << endl;
+                str.erase(0, str.find("\"")+1);
+                cout << key;
+                return key;
+            }
+            else throw string("No keys!");
+        }
+        else throw string("No keys!");
     }
 public:
     std::any parse_object_get_value(std::string& s){
+        if((!s.length()) || (s.find(":") == string::npos)) throw string("No objects value for the last key!");
         any value;
         string pre_value;
-        pre_value.assign(s, s.find(":")+2, s.find(",")-3);
-
-        s.erase(s.find(":"), s.find(",")+1);
+        if(s.find(",") != string::npos){
+            if(s.find("{") != string::npos){
+                if(s.find("{") < s.find(",")){
+                    if(s.find("}") == string::npos) throw string("Bad object!!!");
+                    pre_value.assign(s, s.find(":")+2, s.find("}")-2);
+                    s.erase(0, s.find("}")+1);
+                }
+                else{
+                pre_value.assign(s, s.find(":")+2, s.find(",")-3);
+                s.erase(0, s.find(",")+1);//s.erase(s.find(":"), s.find(",")+1);
+            }
+            }
+            else{
+                pre_value.assign(s, s.find(":")+2, s.find(",")-3);
+                s.erase(0, s.find(",")+1);//s.erase(s.find(":"), s.find(",")+1);
+            }
+        }
+        else{
+            pre_value = s;
+            pre_value.erase(0, pre_value.find(":")+2);
+            s.erase(s.find(":"), s.length()-1);
+        }
 
         if(is_object(pre_value)){
-            pre_value.erase(0, pre_value.find("\"")+1);
-            string key = get_key(pre_value);
-            map <string, any> MAP = {{key, parse_object_get_value(pre_value)}};
-            value = MAP;
+            pre_value.assign(pre_value, pre_value.find("\""), pre_value.length()-2);
+            while(pre_value.length()>5){
+                try{
+                    string key = get_key(pre_value);
+                    //cout << endl << "pre:" << pre_value << ";" << endl;
+                    //cout << "{" << any_cast<string>(parse_object_get_value(pre_value)) << "}" << endl; exit(213);
+                    string find_here_a_value;
+                    //find_here_a_value.assign(pre_value, );
+                    map <string, any> MAP = {{key, parse_object_get_value(pre_value)}};
+                    //cout << key << " : " << any_cast<string>(MAP[key]) << ";" << endl;
+                    value = MAP;
+                }
+                catch(string Error){
+                    cout << endl << "Error occured: " << Error << endl;
+                    if(Error == "No keys!") { value = ""; return value;}
+                    else if(Error == "No objects value for the last key!") { value = ""; return value;}
+                }
+            }
         }
         else if(is_array(pre_value)){
 
@@ -100,12 +144,16 @@ public:
         Json JSON(s);
         str.assign(s, 1, s.length()-2);
 
-        while(str.length()){
+        while(str.length()>5){
             //str.erase(0, str.find("\"")+1);
-            string key = JSON.get_key(str);
+            try{
+                string key = JSON.get_key(str);
+                JSON._parsed_json[key] = JSON.parse_object_get_value(str);
+            }
+            catch(string Error){
+                if(Error == "No keys!") break;
+            }
             //str.erase(0, str.find("\"")+1);
-
-            JSON._parsed_json[key] = JSON.parse_object_get_value(str);
         }
         return JSON;
     }
