@@ -55,13 +55,11 @@ public:
 
 private:
     std::string get_key(std::string& str){
-        cout << "get key: " << endl;
+        cout << "get key: ";
         if(str.find("\"") != string::npos){
             str.erase(0, str.find("\"")+1);
-            //cout << "\t1 str: " << str << endl;
             if(str.find("\"") != string::npos){
                 string key = str.substr(0, str.find("\""));
-                //cout << "\t2 key: " << key << endl;
                 str.erase(0, str.find("\"")+1);
                 cout << key;
                 return key;
@@ -113,8 +111,11 @@ public:
                 }
                 catch(string Error){
                     cout << endl << "Error occured: " << Error << endl;
-                    if(Error == "No keys!") { value = ""; return value;}
-                    else if(Error == "No objects value for the last key!") { value = ""; return value;}
+                    if(Error == "No keys!") { value = -1; return value;}
+                    else if(Error == "No objects value for the last key!") { value = -1; return value;}
+                }
+                catch(...){
+                    cout << endl << "Error occured: "; exit(-12);
                 }
             }
         }
@@ -122,9 +123,9 @@ public:
 
         }
         else if(pre_value.find("\"") != string::npos){
-            pre_value.assign(pre_value, 1, pre_value.length()-2);
+            pre_value.assign(pre_value, pre_value.find("\"")+1, pre_value.rfind("\"")-1);
             value = pre_value;
-            cout << "\"" << pre_value << "\"" << endl;
+            cout << "\"." << pre_value << ".\"" << endl;
         }
         else if((pre_value[0]>=NUM_ST) && (pre_value[pre_value.length()-1]<=NUM_FIN)){
             value = atof(pre_value.c_str());
@@ -151,7 +152,8 @@ public:
                 JSON._parsed_json[key] = JSON.parse_object_get_value(str);
             }
             catch(string Error){
-                if(Error == "No keys!") break;
+                cout << endl << "Error occured: " << Error << endl;
+                exit(-12);
             }
             //str.erase(0, str.find("\"")+1);
         }
@@ -198,9 +200,9 @@ int main()
     delete F1;
 
     //std::map <std::any, std::any> parsed_json;
-    map <std::string, std::any> parsed_json;
+    //map <std::string, std::any> parsed_json;
 
-    parsed_json["Patric"];
+    //parsed_json["Patric"];
     /*parsed_json["Patrric"] = 5;
     parsed_json["Patrrrric"] = 5;
     parsed_json["Patrrrrrrrrric"] = 5;*/
@@ -233,7 +235,7 @@ int main()
     else if(!strcmp(parsed_json["Patric"].type().name(), "Pf")){
         cout << any_cast<float *>(parsed_json["Patric"]);
     }*/
-    cout << endl;
+    //cout << '\a' << endl;
     //cout << parsed_json["Patrric"] << a.type().name();
     return 0;
 }
