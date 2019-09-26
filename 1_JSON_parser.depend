@@ -1,9 +1,9 @@
 # depslib dependency file v1.0
-1569319174 source:d:\kirill\vuz\third semestr\c++\programms\1_json_parser\main.cpp
+1569480440 source:d:\kirill\vuz\third semestr\c++\programms\1_json_parser\main.cpp
 	<iostream>
 	<any>
 	<map>
-	<cstring>
+	<vector>
 	<cstdio>
 	<cstdlib>
 	<fstream>
