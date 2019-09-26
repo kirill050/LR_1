@@ -1,3 +1,7 @@
+// Copyright 2019 Kirill Tikhonov <kirilltikhonov050@gmail.com>
+
+#include <header.hpp>
+
 #include <iostream>
 #include <any>
 #include <map>
@@ -66,13 +70,13 @@ private:
         return str;
     }
     std::string get_key(std::string& str){
-        cout << "get key: ";
+        //cout << "get key: ";
         if(str.find("\"") != string::npos){
             str.erase(0, str.find("\"")+1);
             if(str.find("\"") != string::npos){
                 string key = str.substr(0, str.find("\""));
                 str.erase(0, str.find("\"")+1);
-                cout << key << " ";
+                //cout << key << " ";
                 return key;
             }
             else throw string("No keys!");
@@ -140,12 +144,12 @@ public:
                     value = MAP;
                 }
                 catch(string Error){
-                    cout << endl << "Error occured: " << Error << endl;
+                    //cout << endl << "Error occured: " << Error << endl;
                     if(Error == "No keys!") { value = -1; return value;}
                     else if(Error == "No objects value for the last key!") { value = -1; return value;}
                 }
                 catch(...){
-                    cout << endl << "Error occured: "; exit(-12);
+                    //cout << endl << "Error occured: "; exit(-12);
                 }
             }
         }
@@ -154,7 +158,7 @@ public:
 
             std::vector <std::any> Array;
 
-            cout << "=[";
+            //cout << "=[";
             while (pre_value.find(",") != string::npos){
                 string some_other_string;
                 some_other_string.assign(pre_value, 0, pre_value.find(","));
@@ -163,27 +167,27 @@ public:
                 some_other_string = make_it_without_tabs(some_other_string);
 
                 Array.push_back(parse_object_get_value(some_other_string));
-                cout << ", ";
+                //cout << ", ";
             }
             pre_value = make_it_without_tabs(pre_value);
             Array.push_back(parse_object_get_value(pre_value));
 
-            cout << "]";
+            //cout << "]";
             value = Array;
         }
         else if(pre_value.find("\"") != string::npos){
             pre_value.assign(pre_value, pre_value.find("\"")+1, pre_value.rfind("\"")-1);
             value = pre_value;
-            cout << "\"" << pre_value << "\"";
+            //cout << "\"" << pre_value << "\"";
         }
         else if((pre_value[0]>=NUM_ST) && (pre_value[pre_value.length()-1]<=NUM_FIN)){
             value = atof(pre_value.c_str());
-            cout << "<" << any_cast<double>(value) << ">";
+            //cout << "<" << any_cast<double>(value) << ">";
         }
         else if((pre_value == "true") || (pre_value == "false")){
             if(pre_value == "true") value = true;
             else value = false;
-            cout << "{" << any_cast<bool>(value) << "}";
+            //cout << "{" << any_cast<bool>(value) << "}";
         }
 
         return value;
@@ -198,10 +202,10 @@ public:
             try{
                 string key = JSON.get_key(str);
                 JSON._parsed_json[key] = JSON.parse_object_get_value(str);
-                cout << endl;
+                //cout << endl;
             }
             catch(string Error){
-                cout << endl << "Error occured: " << Error << endl;
+                //cout << endl << "Error occured: " << Error << endl;
                 break;
             }
         }
