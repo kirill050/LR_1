@@ -1,4 +1,4 @@
-"Copyright 2019 Kirill Tikhonov <kirilltikhonov050@gmail.com>"
+Copyright 2019 Kirill Tikhonov <kirilltikhonov050@gmail.com>
 #include <header.hpp>
 #include <iostream>
 #include <any>
@@ -12,20 +12,19 @@
 
 using namespace std;
 class Json {
-
 public:
     // Constructor from a string containing Json data.
-    Json (const std::string& s): json_string(s){}
+    Json(const std::string& s): json_string(s){}
 
     // The method returns true if this instance contains a JSON array. Otherwise false.
-    bool is_array (const string &str) const{
+    bool is_array(const string &str) const{
         if (str[0] == '[') return true;
         else{
                 return false;
         }
     }
    	// The method returns true if this instance contains a JSON object. Otherwise false.
-    bool is_object (const string &str) const{
+    bool is_object(const string &str) const{
         if (str[0] == '{') return true;
         else{
                 return false;
@@ -35,7 +34,7 @@ public:
     // The method returns the value by key if the instance is a JSON object.
     // The value can be one of the following types: Json, std::string, double, bool, or empty.
     // If the instance is a JSON array, an exception is thrown.
-    std::any& operator[] (const std::string& key){
+    std::any& operator[](const std::string& key){
         if (_parsed_json[key].type() == typeid(string)){
             return _parsed_json[key];//any_cast<const std::string&>(_parsed_json[key]);
         }
@@ -56,14 +55,14 @@ public:
     // The method returns a value by index if the instance is a JSON array.
     // The value can be one of the following types: Json, std::string, double, bool, or empty.
     // If the instance is a JSON object, an exception is thrown.
-    std::any& operator[] (int index){
+    std::any& operator[](int index){
         auto it = _parsed_json.begin();
         advance(it, index);
         return it->second;
     }
 
 private:
-    std::string make_it_without_tabs (std::string& str){
+    std::string make_it_without_tabs(std::string& str){
         while ((str[0] == ' ') ||  (str[0] == '\n') || (str[0] == '\t')){
             str.assign(str, 1, str.length()-1);
         }
@@ -92,7 +91,7 @@ private:
     }
 
 public:
-    std::any parse_object_get_value (std::string& s){
+    std::any parse_object_get_value(std::string& s){
         if ((!s.length()) || (s.find(":") == string::npos)) throw string("No objects value for the last key!");
         any value;
         string pre_value;
@@ -203,7 +202,7 @@ public:
         return value;
     }
     // The method returns a Json class object from a string containing Json data.
-    static Json parse (const std::string& s){
+    static Json parse(const std::string& s){
         string str;
         Json JSON(s);
         str.assign(s, 1, s.length()-2);
@@ -223,7 +222,7 @@ public:
     }
 
     // The method returns a Json class object from a file containing JSON data in text format.
-    static Json parseFile (const std::string& path_to_file){
+    static Json parseFile(const std::string& path_to_file){
         ifstream JSON_file(path_to_file);
         string s;
         Json JSON(s);
