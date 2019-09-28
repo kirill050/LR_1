@@ -1,4 +1,4 @@
-Copyright 2019 Kirill Tikhonov <kirilltikhonov050@gmail.com>
+//Copyright 2019 Kirill Tikhonov <kirilltikhonov050@gmail.com>
 #include <header.hpp>
 #include <iostream>
 #include <any>
