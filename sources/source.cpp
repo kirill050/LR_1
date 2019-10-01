@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 //"Copyright 2019 Kirill Tikhonov <kirilltikhonov050@gmail.com>"
 #include "json.h"
 
@@ -17,9 +18,43 @@ bool Json::is_object (const string &str) const{
     if (str[0] == '{') return true;
     else{
             return false;
+=======
+//Copyright 2019 Kirill Tikhonov <kirilltikhonov050@gmail.com>
+#include <header.hpp>
+#include <iostream>
+#include <any>
+#include <map>
+#include <vector>
+#include <cstdio>
+#include <cstdlib>
+#include <fstream>
+#define NUM_ST 48
+#define NUM_FIN 57
+
+using namespace std;
+class Json {
+public:
+    // Constructor from a string containing Json data.
+    Json(const std::string& s): json_string(s){}
+
+    // The method returns true if this instance contains a JSON array. Otherwise false.
+    bool is_array(const string &str) const{
+        if (str[0] == '[') return true;
+        else{
+                return false;
+        }
+    }
+   	// The method returns true if this instance contains a JSON object. Otherwise false.
+    bool is_object(const string &str) const{
+        if (str[0] == '{') return true;
+        else{
+                return false;
+        }
+>>>>>>> 7bbf9520f84d755e0f0d7ae92d559a23df3dc37c
     }
 }
 
+<<<<<<< HEAD
 // The method returns the value by key if the instance is a JSON object.
 // The value can be one of the following types: Json, std::string, double, bool, or empty.
 // If the instance is a JSON array, an exception is thrown.
@@ -38,9 +73,40 @@ std::any& Json::operator[] (const std::string& key){
     }
     else{
         throw string("This is array!!!");
+=======
+    // The method returns the value by key if the instance is a JSON object.
+    // The value can be one of the following types: Json, std::string, double, bool, or empty.
+    // If the instance is a JSON array, an exception is thrown.
+    std::any& operator[](const std::string& key){
+        if (_parsed_json[key].type() == typeid(string)){
+            return _parsed_json[key];//any_cast<const std::string&>(_parsed_json[key]);
+        }
+        else if (_parsed_json[key].type() == typeid(double)){
+            return _parsed_json[key];
+        }
+        else if (_parsed_json[key].type() == typeid(bool)){
+            return _parsed_json[key];
+        }
+        else if (_parsed_json["Patric"].type() == typeid(void)){
+            return _parsed_json[key];//return << any_cast<float>(_parsed_json["Patric"]);
+        }
+        else{
+            throw string("This is array!!!");
+        }
+    }
+
+    // The method returns a value by index if the instance is a JSON array.
+    // The value can be one of the following types: Json, std::string, double, bool, or empty.
+    // If the instance is a JSON object, an exception is thrown.
+    std::any& operator[](int index){
+        auto it = _parsed_json.begin();
+        advance(it, index);
+        return it->second;
+>>>>>>> 7bbf9520f84d755e0f0d7ae92d559a23df3dc37c
     }
 }
 
+<<<<<<< HEAD
 // The method returns a value by index if the instance is a JSON array.
 // The value can be one of the following types: Json, std::string, double, bool, or empty.
 // If the instance is a JSON object, an exception is thrown.
@@ -52,6 +118,17 @@ std::any& Json::operator[] (int index){
 std::string Json::make_it_without_tabs (std::string& str){
     while ((str[0] == ' ') ||  (str[0] == '\n') || (str[0] == '\t')){
         str.assign(str, 1, str.length()-1);
+=======
+private:
+    std::string make_it_without_tabs(std::string& str){
+        while ((str[0] == ' ') ||  (str[0] == '\n') || (str[0] == '\t')){
+            str.assign(str, 1, str.length()-1);
+        }
+        string make_some_more_style_to_be_used_in_parse_obj_func(": ");
+        make_some_more_style_to_be_used_in_parse_obj_func += str;
+        str = make_some_more_style_to_be_used_in_parse_obj_func;
+        return str;
+>>>>>>> 7bbf9520f84d755e0f0d7ae92d559a23df3dc37c
     }
     string Json::make_some_more_style_to_be_used_in_parse_obj_func(": ");
     make_some_more_style_to_be_used_in_parse_obj_func += str;
@@ -78,6 +155,7 @@ std::string Json::get_key (std::string& str){
 }
 
 public:
+<<<<<<< HEAD
 std::any Json::parse_object_get_value (std::string& s){
     if ((!s.length()) || (s.find(":") == string::npos)) throw string("No objects value for the last key!");
     any value;
@@ -88,6 +166,34 @@ std::any Json::parse_object_get_value (std::string& s){
                 if(s.find("}") == string::npos) throw string("Bad object!!!");
                 pre_value.assign(s, s.find(":")+2, s.find("}")-2);
                 s.erase(0, s.find("}")+1);
+=======
+    std::any parse_object_get_value(std::string& s){
+        if ((!s.length()) || (s.find(":") == string::npos)) throw string("No objects value for the last key!");
+        any value;
+        string pre_value;
+        if (s.find(",") != string::npos){
+            if (s.find("{") != string::npos){
+                if (s.find("{") < s.find(",")){
+                    if(s.find("}") == string::npos) throw string("Bad object!!!");
+                    pre_value.assign(s, s.find(":")+2, s.find("}")-2);
+                    s.erase(0, s.find("}")+1);
+                }
+                else if (s.find("[") != string::npos){
+                    if (s.find("[") < s.find(",")){
+                        if (s.find("]") == string::npos) throw string("Bad array!!!");
+                        pre_value.assign(s, s.find(":")+2, s.find("]")-2);
+                        s.erase(0, s.find("]")+1);
+                    }
+                    else{
+                    pre_value.assign(s, s.find(":")+2, s.find(",")-3);
+                    s.erase(0, s.find(",")+1);
+                    }
+                }
+                else{
+                pre_value.assign(s, s.find(":")+2, s.find(",")-3);
+                s.erase(0, s.find(",")+1);
+                }
+>>>>>>> 7bbf9520f84d755e0f0d7ae92d559a23df3dc37c
             }
             else if (s.find("[") != string::npos){
                 if (s.find("[") < s.find(",")){
@@ -169,6 +275,7 @@ std::any Json::parse_object_get_value (std::string& s){
         //cout << "]";
         value = Array;
     }
+<<<<<<< HEAD
     else if (pre_value.find("\"") != string::npos){
         pre_value.assign(pre_value, pre_value.find("\"")+1, pre_value.rfind("\"")-1);
         value = pre_value;
@@ -182,10 +289,29 @@ std::any Json::parse_object_get_value (std::string& s){
         if (pre_value == "true") value = true;
         else{
                 value = false;
+=======
+    // The method returns a Json class object from a string containing Json data.
+    static Json parse(const std::string& s){
+        string str;
+        Json JSON(s);
+        str.assign(s, 1, s.length()-2);
+
+        while (str.length() > 5){
+            try{
+                string key = JSON.get_key(str);
+                JSON._parsed_json[key] = JSON.parse_object_get_value(str);
+                //cout << endl;
+            }
+            catch (string Error){
+                //cout << endl << "Error occured: " << Error << endl;
+                break;
+            }
+>>>>>>> 7bbf9520f84d755e0f0d7ae92d559a23df3dc37c
         }
         //cout << "{" << any_cast<bool>(value) << "}";
     }
 
+<<<<<<< HEAD
     return value;
 }
 // The method returns a Json class object from a string containing Json data.
@@ -203,6 +329,22 @@ static Json Json::parse (const std::string& s){
         catch (string Error){
             //cout << endl << "Error occured: " << Error << endl;
             break;
+=======
+    // The method returns a Json class object from a file containing JSON data in text format.
+    static Json parseFile(const std::string& path_to_file){
+        ifstream JSON_file(path_to_file);
+        string s;
+        Json JSON(s);
+        char ch;
+        if (JSON_file.is_open()){
+            while (true)
+            {
+                JSON_file.get(ch);
+                if (JSON_file.eof()) break;
+                JSON.json_string.append(1, ch);
+            }
+            JSON_file.close();
+>>>>>>> 7bbf9520f84d755e0f0d7ae92d559a23df3dc37c
         }
     }
     return JSON;
