@@ -122,17 +122,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named Parser
+# Target rules for targets named JSON_Parser
 
 # Build rule for target.
-Parser: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 Parser
-.PHONY : Parser
+JSON_Parser: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 JSON_Parser
+.PHONY : JSON_Parser
 
 # fast build rule for target.
-Parser/fast:
-	$(MAKE) -f CMakeFiles/Parser.dir/build.make CMakeFiles/Parser.dir/build
-.PHONY : Parser/fast
+JSON_Parser/fast:
+	$(MAKE) -f CMakeFiles/JSON_Parser.dir/build.make CMakeFiles/JSON_Parser.dir/build
+.PHONY : JSON_Parser/fast
 
 #=============================================================================
 # Target rules for targets named tests
@@ -147,32 +147,59 @@ tests/fast:
 	$(MAKE) -f CMakeFiles/tests.dir/build.make CMakeFiles/tests.dir/build
 .PHONY : tests/fast
 
-sources/source.o: sources/source.cpp.o
+sources/json.o: sources/json.cpp.o
 
-.PHONY : sources/source.o
+.PHONY : sources/json.o
 
 # target to build an object file
-sources/source.cpp.o:
-	$(MAKE) -f CMakeFiles/Parser.dir/build.make CMakeFiles/Parser.dir/sources/source.cpp.o
-.PHONY : sources/source.cpp.o
+sources/json.cpp.o:
+	$(MAKE) -f CMakeFiles/JSON_Parser.dir/build.make CMakeFiles/JSON_Parser.dir/sources/json.cpp.o
+.PHONY : sources/json.cpp.o
 
-sources/source.i: sources/source.cpp.i
+sources/json.i: sources/json.cpp.i
 
-.PHONY : sources/source.i
+.PHONY : sources/json.i
 
 # target to preprocess a source file
-sources/source.cpp.i:
-	$(MAKE) -f CMakeFiles/Parser.dir/build.make CMakeFiles/Parser.dir/sources/source.cpp.i
-.PHONY : sources/source.cpp.i
+sources/json.cpp.i:
+	$(MAKE) -f CMakeFiles/JSON_Parser.dir/build.make CMakeFiles/JSON_Parser.dir/sources/json.cpp.i
+.PHONY : sources/json.cpp.i
 
-sources/source.s: sources/source.cpp.s
+sources/json.s: sources/json.cpp.s
 
-.PHONY : sources/source.s
+.PHONY : sources/json.s
 
 # target to generate assembly for a file
-sources/source.cpp.s:
-	$(MAKE) -f CMakeFiles/Parser.dir/build.make CMakeFiles/Parser.dir/sources/source.cpp.s
-.PHONY : sources/source.cpp.s
+sources/json.cpp.s:
+	$(MAKE) -f CMakeFiles/JSON_Parser.dir/build.make CMakeFiles/JSON_Parser.dir/sources/json.cpp.s
+.PHONY : sources/json.cpp.s
+
+sources/main.o: sources/main.cpp.o
+
+.PHONY : sources/main.o
+
+# target to build an object file
+sources/main.cpp.o:
+	$(MAKE) -f CMakeFiles/JSON_Parser.dir/build.make CMakeFiles/JSON_Parser.dir/sources/main.cpp.o
+.PHONY : sources/main.cpp.o
+
+sources/main.i: sources/main.cpp.i
+
+.PHONY : sources/main.i
+
+# target to preprocess a source file
+sources/main.cpp.i:
+	$(MAKE) -f CMakeFiles/JSON_Parser.dir/build.make CMakeFiles/JSON_Parser.dir/sources/main.cpp.i
+.PHONY : sources/main.cpp.i
+
+sources/main.s: sources/main.cpp.s
+
+.PHONY : sources/main.s
+
+# target to generate assembly for a file
+sources/main.cpp.s:
+	$(MAKE) -f CMakeFiles/JSON_Parser.dir/build.make CMakeFiles/JSON_Parser.dir/sources/main.cpp.s
+.PHONY : sources/main.cpp.s
 
 tests/test.o: tests/test.cpp.o
 
@@ -210,11 +237,14 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... test"
-	@echo "... Parser"
+	@echo "... JSON_Parser"
 	@echo "... tests"
-	@echo "... sources/source.o"
-	@echo "... sources/source.i"
-	@echo "... sources/source.s"
+	@echo "... sources/json.o"
+	@echo "... sources/json.i"
+	@echo "... sources/json.s"
+	@echo "... sources/main.o"
+	@echo "... sources/main.i"
+	@echo "... sources/main.s"
 	@echo "... tests/test.o"
 	@echo "... tests/test.i"
 	@echo "... tests/test.s"

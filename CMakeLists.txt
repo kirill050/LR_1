@@ -18,31 +18,40 @@ huntergate(
   SHA1 "70287b1ffa810ee4e952052a9adff9b4856d0d54"
 )
 
-project(Parser)
+project(JSON_Parser)
+
 string(APPEND CMAKE_CXX_FLAGS " -pedantic -Werror -Wall -Wextra")
 string(APPEND CMAKE_CXX_FLAGS " -Wno-unused-command-line-argument")
 string(APPEND CMAKE_CXX_FLAGS " -Wshadow -Wnon-virtual-dtor")
 
 hunter_add_package(GTest)
 find_package(GTest CONFIG REQUIRED)
+add_library(JSON_Parser STATIC
+	${CMAKE_CURRENT_SOURCE_DIR}/sources/json.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/sources/main.cpp
+)
 
-add_library(json STATIC sources/json.cpp)
 
-add_executable(main sources/main.cpp)
+#set(SOURCE_EXE sources/main.cpp)
+#set(SOURCE_LIB sources/json.cpp)
 
-target_link_libraries(main json)
+#add_library(json STATIC ${SOURCE_LIB})
+
+#add_executable(main ${SOURCE_EXE})
+
+#target_link_libraries(main json)
 
 add_executable(tests
   ${CMAKE_CURRENT_SOURCE_DIR}/tests/test.cpp
 )
 
-target_include_directories(Parser 
+target_include_directories(JSON_Parser
   PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 target_include_directories(tests 
   PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
-target_link_libraries(tests GTest::main Parser)
+target_link_libraries(tests GTest::main JSON_Parser)
 
 enable_testing()
 add_test(NAME unit_tests COMMAND tests) 
@@ -51,7 +60,7 @@ if(BUILD_COVERAGE)
   set(ENABLE_COVERAGE ON CACHE BOOL "Enable coverage build." FORCE)
   list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
   find_package(codecov)
-  add_coverage(Parser)
+  add_coverage(JSON_Parser)
   add_coverage(tests)
   list(APPEND LCOV_REMOVE_PATTERNS "'${PROJECT_SOURCE_DIR}/tests/*'")
   coverage_evaluate()

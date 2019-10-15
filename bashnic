@@ -1,0 +1,27 @@
+#!/bin/bash
+string="\""
+stringstring=$string$string
+out=$string$1$string
+git status
+echo -n "Are you sure you want to commit this project now? (Y/n) "
+
+read item
+case "$item" in
+     y|Y) echo "Adding files............."
+	git add .
+	if [[ $out != $stringstring ]]
+	then
+	echo "Commiting your project.........."
+	git commit -m $out
+	#echo $out
+	else 
+	echo "Type a commit label!!!"
+	exit 0
+	fi
+	;;
+     n|N) echo "Finishing with no commiting"
+	exit 0
+	;;
+     *) echo "Finishing with no commiting"
+	;;
+esac 

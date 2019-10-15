@@ -133,7 +133,7 @@ CMAKE_OBJCOPY:FILEPATH=/usr/bin/objcopy
 CMAKE_OBJDUMP:FILEPATH=/usr/bin/objdump
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=Parser
+CMAKE_PROJECT_NAME:STATIC=JSON_Parser
 
 //Path to a program.
 CMAKE_RANLIB:FILEPATH=/usr/bin/ranlib
@@ -206,6 +206,15 @@ HUNTER_STATUS_PRINT:BOOL=ON
 HUNTER_TLS_VERIFY:BOOL=ON
 
 //Value Computed by CMake
+JSON_Parser_BINARY_DIR:STATIC=/home/kirill/Documents/3_semestr/c++/1_lr_parser/LR_1/cmake
+
+//Dependencies for target
+JSON_Parser_LIB_DEPENDS:STATIC=
+
+//Value Computed by CMake
+JSON_Parser_SOURCE_DIR:STATIC=/home/kirill/Documents/3_semestr/c++/1_lr_parser/LR_1
+
+//Value Computed by CMake
 Parser_BINARY_DIR:STATIC=/home/kirill/Documents/3_semestr/c++/1_lr_parser/LR_1/cmake
 
 //Dependencies for target
@@ -213,6 +222,9 @@ Parser_LIB_DEPENDS:STATIC=
 
 //Value Computed by CMake
 Parser_SOURCE_DIR:STATIC=/home/kirill/Documents/3_semestr/c++/1_lr_parser/LR_1
+
+//Dependencies for target
+json_LIB_DEPENDS:STATIC=
 
 
 ########################

@@ -1,5 +1,5 @@
 /home/kirill/Documents/3_semestr/c++/1_lr_parser/LR_1/cmake/CMakeFiles/rebuild_cache.dir
 /home/kirill/Documents/3_semestr/c++/1_lr_parser/LR_1/cmake/CMakeFiles/edit_cache.dir
 /home/kirill/Documents/3_semestr/c++/1_lr_parser/LR_1/cmake/CMakeFiles/test.dir
-/home/kirill/Documents/3_semestr/c++/1_lr_parser/LR_1/cmake/CMakeFiles/Parser.dir
+/home/kirill/Documents/3_semestr/c++/1_lr_parser/LR_1/cmake/CMakeFiles/JSON_Parser.dir
 /home/kirill/Documents/3_semestr/c++/1_lr_parser/LR_1/cmake/CMakeFiles/tests.dir
