@@ -21,33 +21,36 @@ huntergate(
 project(JSON_Parser)
 
 string(APPEND CMAKE_CXX_FLAGS " -pedantic -Werror -Wall -Wextra")
-string(APPEND CMAKE_CXX_FLAGS " -Wno-unused-command-line-argument")
-string(APPEND CMAKE_CXX_FLAGS " -Wshadow -Wnon-virtual-dtor")
+#string(APPEND CMAKE_CXX_FLAGS " -Wno-unused-command-line-argument")
+#string(APPEND CMAKE_CXX_FLAGS " -Wshadow -Wnon-virtual-dtor")
 
 hunter_add_package(GTest)
 find_package(GTest CONFIG REQUIRED)
-add_library(JSON_Parser STATIC
-	${CMAKE_CURRENT_SOURCE_DIR}/sources/json.cpp
+
+add_executable(
+	main_exec
 	${CMAKE_CURRENT_SOURCE_DIR}/sources/main.cpp
 )
 
-
-#set(SOURCE_EXE sources/main.cpp)
-#set(SOURCE_LIB sources/json.cpp)
-
-#add_library(json STATIC ${SOURCE_LIB})
-
-#add_executable(main ${SOURCE_EXE})
-
-#target_link_libraries(main json)
+add_library(
+	parser
+	STATIC
+	${CMAKE_CURRENT_SOURCE_DIR}/sources/json.cpp
+)
+target_include_directories(
+	parser
+	PUBLIC
+	${CMAKE_CURRENT_SOURCE_DIR}/sources/include
+)
+target_link_libraries(
+	main_exec
+	parser
+)
 
 add_executable(tests
   ${CMAKE_CURRENT_SOURCE_DIR}/tests/test.cpp
 )
 
-target_include_directories(JSON_Parser
-  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
-)
 target_include_directories(tests 
   PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
