@@ -1,4 +1,14 @@
 //"Copyright 2019 Kirill Tikhonov <kirilltikhonov050@gmail.com>"
+#include <header.hpp>
+#include <iostream>
+#include <any>
+#include <map>
+#include <vector>
+#include <cstdio>
+#include <cstdlib>
+#include <fstream>
+#define NUM_ST 48
+#define NUM_FIN 57
 
 using namespace std;
 // Constructor from a string containing Json data.
