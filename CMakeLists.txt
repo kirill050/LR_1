@@ -27,10 +27,8 @@ string(APPEND CMAKE_CXX_FLAGS " -Wshadow -Wnon-virtual-dtor")
 hunter_add_package(GTest)
 find_package(GTest CONFIG REQUIRED)
 
-add_library(
-	JSON_Parser
-	STATIC
-	${CMAKE_CURRENT_SOURCE_DIR}/sources/json.cpp
+add_library(JSON_Parser STATIC
+  ${CMAKE_CURRENT_SOURCE_DIR}/sources/json.cpp
 )
 
 add_executable(tests

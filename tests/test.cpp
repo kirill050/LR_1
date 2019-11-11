@@ -1,4 +1,4 @@
-// Copyright 2018 Your Name <your_email>
+// Copyright 2018 Kirill Tikhonov  <kirilltikhonov050@gmail.com>
 
 #include <gtest/gtest.h>
 

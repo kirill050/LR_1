@@ -1,19 +1,11 @@
 //"Copyright 2019 Kirill Tikhonov <kirilltikhonov050@gmail.com>"
-#include <header.hpp>
-#include <iostream>
-#include <any>
-#include <map>
-#include <vector>
-#include <cstdio>
-#include <cstdlib>
-#include <fstream>
-#define NUM_ST 48
-#define NUM_FIN 57
+#include "json.hpp"
 
 using namespace std;
 // Constructor from a string containing Json data.
 Json::Json (const std::string& s): json_string(s){}
 // The method returns true if this instance contains a JSON array. Otherwise false.bool Json::is_array (const string &str) const{
+bool Json::is_array(const string &str) const{
     if (str[0] == '[') return true;
     else{
             return false;
@@ -60,7 +52,7 @@ std::string Json::make_it_without_tabs (std::string& str){
     while ((str[0] == ' ') ||  (str[0] == '\n') || (str[0] == '\t')){
         str.assign(str, 1, str.length()-1);
     }
-    string Json::make_some_more_style_to_be_used_in_parse_obj_func(": ");
+    string make_some_more_style_to_be_used_in_parse_obj_func(": ");
     make_some_more_style_to_be_used_in_parse_obj_func += str;
     str = make_some_more_style_to_be_used_in_parse_obj_func;
     return str;
@@ -195,13 +187,13 @@ std::any Json::parse_object_get_value (std::string& s){
 // The method returns a Json class object from a string containing Json data.
 static Json Json::parse (const std::string& s){
     string str;
-    Json JSON(s);
+    Json json(s);
     str.assign(s, 1, s.length()-2);
 
     while (str.length() > 5){
         try{
-            string key = JSON.get_key(str);
-            JSON._parsed_json[key] = JSON.parse_object_get_value(str);
+            string key = json.get_key(str);
+            json._parsed_json[key] = json.parse_object_get_value(str);
             //cout << endl;
         }
         catch (string Error){
@@ -209,24 +201,24 @@ static Json Json::parse (const std::string& s){
             break;
         }
     }
-    return JSON;
+    return json;
 }
 
 // The method returns a Json class object from a file containing JSON data in text format.
 static Json Json::parseFile (const std::string& path_to_file){
     ifstream JSON_file(path_to_file);
     string s;
-    Json JSON(s);
+    Json json(s);
     char ch;
     if (JSON_file.is_open()){
         while (true)
         {
             JSON_file.get(ch);
             if (JSON_file.eof()) break;
-            JSON.json_string.append(1, ch);
+            json.json_string.append(1, ch);
         }
         JSON_file.close();
     }
-    JSON = Json::parse(JSON.json_string);
-    return JSON;
+    json = Json::parse(json.json_string);
+    return json;
 }
