@@ -28,25 +28,57 @@ hunter_add_package(GTest)
 find_package(GTest CONFIG REQUIRED)
 
 add_library(
-	JSON_Parser
-	STATIC
-	${CMAKE_CURRENT_SOURCE_DIR}/sources/json.cpp
+        ${PROJECT_NAME}
+        STATIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/sources/json.cpp
 )
 
-add_executable(tests
-  ${CMAKE_CURRENT_SOURCE_DIR}/tests/test.cpp
+
+add_executable(
+        tests
+        ${CMAKE_CURRENT_SOURCE_DIR}/tests/test.cpp
 )
-target_include_directories(JSON_Parser
-  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/sources/include
+target_include_directories(
+        ${PROJECT_NAME}
+        PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/sources/include
 )
 
-target_include_directories(tests 
-  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
+target_include_directories(
+        tests 
+        PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
-target_link_libraries(tests GTest::main JSON_Parser)
+
+find_library(
+  GTEST_LOCAL_LIB_MAIN
+  NAMES gtest_main
+  PATHS ${PROJECT_NAME}/lib64/
+)
+target_link_libraries(
+  tests
+  ${CMAKE_THREAD_LIBS_INIT}
+  ${GTEST_LOCAL_LIB}
+  ${GTEST_LOCAL_LIB_MAIN}
+  ${PROJECT_NAME}
+)
 
 enable_testing()
 add_test(NAME unit_tests COMMAND tests) 
+
+if (BUILD_MAIN)
+  set(MAIN_NAME ${PROJECT_NAME}Main)
+  add_executable(
+    ${MAIN_NAME}
+    ${CMAKE_CURRENT_SOURCE_DIR}/sources/main.cpp
+  )
+
+  target_include_directories(
+    ${MAIN_NAME}
+    PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
+  )
+  target_link_libraries(${MAIN_NAME} ${PROJECT_NAME})
+endif ()
 
 if(BUILD_COVERAGE)
   set(ENABLE_COVERAGE ON CACHE BOOL "Enable coverage build." FORCE)
