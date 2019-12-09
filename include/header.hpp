@@ -1,4 +1,6 @@
 // Copyright 2019 Kirill Tikhonov <kirilltikhonov050@gmail.com>
+#ifndef INCLUDE_HEADER_HPP_
+#define INCLUDE_HEADER_HPP_
 #pragma once
 
 #include <iostream>
@@ -83,3 +85,4 @@ public:
     std::string json_string;
     std::map <std::string, std::any> _parsed_json;
 };
+#endif // INCLUDE_HEADER_HPP_
