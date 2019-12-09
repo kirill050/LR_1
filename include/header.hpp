@@ -45,21 +45,27 @@ public:
 
     static Json parse(const std::string& s){
         string str;
-        Json JSON(s);
-        str.assign(s, 1, s.length()-2);
+        try{
+            Json JSON(s);
+            str.assign(s, 1, s.length()-2);
 
-        while(str.length()>5){
-            try{
-                string key = JSON.get_key(str);
-                JSON._parsed_json[key] = JSON.parse_object_get_value(str);
-                //cout << endl;
+            while(str.length()>5){
+                try{
+                    string key = JSON.get_key(str);
+                    JSON._parsed_json[key] = JSON.parse_object_get_value(str);
+                    //cout << endl;
+                }
+                catch(string Error){
+                    //cout << endl << "Error occured: " << Error << endl;
+                    break;
+                }
             }
-            catch(string Error){
-                //cout << endl << "Error occured: " << Error << endl;
-                break;
-            }
+            return JSON;
         }
-        return JSON;
+        catch(std::bad_any_cast()) {
+            std::cout << "This is not a Json-object "
+                         "or Json-array!" << std::endl;
+            return Json();
     }
 
     // Метод возвращает объекта класса Json из файла, содержащего Json-данные в текстовом формате.

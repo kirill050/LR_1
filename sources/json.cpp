@@ -31,7 +31,7 @@ std::any& Json::operator[](const std::string& key){
         return _parsed_json[key];//return << any_cast<float>(_parsed_json["Patric"]);
     }
     else{
-        throw string("This is array!!!");
+        throw std::bad_any_cast();
     }
 }
 
@@ -63,25 +63,25 @@ std::string Json::get_key(std::string& str){
             //cout << key << " ";
             return key;
         }
-        else throw string("No keys!");
+        else throw std::bad_any_cast();
     }
-    else throw string("No keys!");
+    else throw std::bad_any_cast();
 }
 
 std::any Json::parse_object_get_value(std::string& s){
-    if((!s.length()) || (s.find(":") == string::npos)) throw string("No objects value for the last key!");
+    if((!s.length()) || (s.find(":") == string::npos)) throw std::bad_any_cast();
     any value;
     string pre_value;
     if(s.find(",") != string::npos){
         if(s.find("{") != string::npos){
             if(s.find("{") < s.find(",")){
-                if(s.find("}") == string::npos) throw string("Bad object!!!");
+                if(s.find("}") == string::npos) throw std::bad_any_cast();
                 pre_value.assign(s, s.find(":")+2, s.find("}")-2);
                 s.erase(0, s.find("}")+1);
             }
             else if(s.find("[") != string::npos){
                 if(s.find("[") < s.find(",")){
-                    if(s.find("]") == string::npos) throw string("Bad array!!!");
+                    if(s.find("]") == string::npos) throw std::bad_any_cast();
                     pre_value.assign(s, s.find(":")+2, s.find("]")-2);
                     s.erase(0, s.find("]")+1);
                 }
@@ -97,7 +97,7 @@ std::any Json::parse_object_get_value(std::string& s){
         }
         else if(s.find("[") != string::npos){
             if(s.find("[") < s.find(",")){
-                if(s.find("]") == string::npos) throw string("Bad array!!!");
+                if(s.find("]") == string::npos) throw std::bad_any_cast();
                 pre_value.assign(s, s.find(":")+2, s.find("]")-2);
                 s.erase(0, s.find("]")+1);
             }
@@ -170,8 +170,14 @@ std::any Json::parse_object_get_value(std::string& s){
     }
     else if((pre_value == "true") || (pre_value == "false")){
         if(pre_value == "true") value = true;
-        else value = false;
+        else if()value = false;
         //cout << "{" << any_cast<bool>(value) << "}";
+        else{
+            throw std::bad_any_cast();
+        }
+    }
+    else{
+        throw std::bad_any_cast();
     }
 
     return value;
